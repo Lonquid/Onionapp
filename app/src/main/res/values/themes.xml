@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.OnionThemer" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.OnionThemer" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:statusBarColor">#15131A</item>
         <item name="android:navigationBarColor">#15131A</item>
         <item name="android:windowBackground">#15131A</item>
