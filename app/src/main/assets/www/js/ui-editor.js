@@ -55,12 +55,34 @@ const UIEditor = (() => {
     });
 
     renderToolGrid();
+    bindSlotSearch();
+  }
+
+  function bindSlotSearch() {
+    document.getElementById("slot-search").addEventListener("input", (e) => {
+      filterSlotRail(e.target.value.trim().toLowerCase());
+    });
+  }
+
+  function filterSlotRail(query) {
+    const groups = document.querySelectorAll(".slotrail__group");
+    groups.forEach((groupEl) => {
+      let anyVisible = false;
+      groupEl.querySelectorAll(".slotitem").forEach((item) => {
+        const haystack = item.dataset.searchText || "";
+        const match = !query || haystack.includes(query);
+        item.classList.toggle("slotitem--searchhidden", !match);
+        if (match) anyVisible = true;
+      });
+      groupEl.classList.toggle("slotrail__group--searchhidden", !anyVisible);
+    });
   }
 
   function openProject(p) {
     project = p;
     currentSlotId = "background";
     document.getElementById("editor-project-name").textContent = project.name;
+    document.getElementById("slot-search").value = "";
     renderSlotRail();
     selectSlot(currentSlotId);
   }
@@ -96,11 +118,13 @@ const UIEditor = (() => {
         const btn = document.createElement("button");
         btn.className = "slotitem";
         btn.dataset.slotId = slot.id;
+        btn.dataset.searchText = (slot.id + " " + slot.desc + " " + shortSlotLabel(slot)).toLowerCase();
+        btn.title = slot.desc;
         const painted = project.hasStack(slot.id);
         btn.innerHTML = `
           <span class="slotitem__thumb" id="thumb-${slot.id}"></span>
           <span class="slotitem__meta">
-            <span class="slotitem__name">${humanizeSlotName(slot.id)}</span>
+            <span class="slotitem__name">${shortSlotLabel(slot)}</span>
             <span class="slotitem__dim">${slot.w}×${slot.h}${painted ? "" : " · empty"}</span>
           </span>
         `;
@@ -113,8 +137,14 @@ const UIEditor = (() => {
     refreshLayerThumbnails();
   }
 
-  function humanizeSlotName(id) {
-    return id.replace(/([A-Z])/g, " $1").replace(/^./, c => c.toUpperCase()).replace(/state(\d+)/i, "frame $1");
+  /** Short label for the slot rail: prefer the filename stem (familiar to
+   *  anyone who's looked inside a theme folder) over the verbose desc. */
+  function shortSlotLabel(slot) {
+    const base = slot.file.split("/").pop().replace(/\.png$/i, "");
+    return base
+      .replace(/^chargingState/, "Charge ")
+      .replace(/^lum/, "Brightness ")
+      .replace(/[-_]/g, " ");
   }
 
   function updateSlotRailSelection() {

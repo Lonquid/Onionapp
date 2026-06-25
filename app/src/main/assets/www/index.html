@@ -74,7 +74,10 @@
 
   <div class="editor">
     <!-- Asset slot rail: which part of the theme are we painting -->
-    <nav class="slotrail" id="slot-rail" aria-label="Theme assets"></nav>
+    <div class="slotrail-wrap">
+      <input type="search" id="slot-search" class="slotsearch" placeholder="Search assets…" />
+      <nav class="slotrail" id="slot-rail" aria-label="Theme assets"></nav>
+    </div>
 
     <!-- Canvas stage -->
     <div class="stage" id="stage">

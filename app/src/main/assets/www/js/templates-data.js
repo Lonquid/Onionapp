@@ -1,8 +1,11 @@
 /**
  * Built-in starting templates. Each template provides a base fill color
- * (or simple gradient) per slot group, so a new project doesn't open to
- * a totally blank canvas. These are intentionally simple — they're a
- * starting point for painting, not finished themes.
+ * (or simple gradient/pattern) per slot group, so a new project doesn't
+ * open to a totally blank canvas. These are intentionally simple — a
+ * starting point for painting, not finished themes. "Blueprint" is the
+ * one exception: it's a deliberate, from-scratch recreation of a real
+ * popular OnionOS theme's background, since that's the one new users
+ * are most likely to already recognize as "the default look."
  */
 
 const ONION_TEMPLATES = [
@@ -11,20 +14,23 @@ const ONION_TEMPLATES = [
     name: "Blank Canvas",
     description: "Every slot starts transparent. Full creative control.",
     swatch: ["#15131A", "#15131A", "#15131A"],
+    defaultProjectName: "Untitled Theme",
     fill: { mode: "transparent" },
   },
   {
     id: "blueprint",
-    name: "Blueprint",
-    description: "Cool technical-drawing blue, fine grid lines, white accents.",
-    swatch: ["#0E2A47", "#1C4D7C", "#FFFFFF"],
-    fill: { mode: "grid", bg: "#123A5E", line: "#1C5C94", accent: "#FFFFFF" },
+    name: "Blueprint (by Aemiii91)",
+    description: "A from-scratch recreation of the real, popular \"Blueprint\" OnionOS theme's grid background — a great base to riff on. Not affiliated with the original author.",
+    swatch: ["#1A418D", "#3C5D9E", "#768DBB"],
+    defaultProjectName: "My Blueprint Theme",
+    fill: { mode: "grid", bg: "#1A418D", line: "#3C5D9E", major: "#768DBB", minorStep: 8, majorEvery: 10, crosshair: true },
   },
   {
     id: "sunset",
     name: "Sunset Handheld",
     description: "Warm gradient background, soft orange-to-purple.",
     swatch: ["#2B1055", "#7C2F6E", "#FF7A45"],
+    defaultProjectName: "Sunset Handheld",
     fill: { mode: "gradient", from: "#2B1055", to: "#FF7A45" },
   },
   {
@@ -32,6 +38,7 @@ const ONION_TEMPLATES = [
     name: "Mono Terminal",
     description: "High-contrast black & green, monospace energy.",
     swatch: ["#05140A", "#0C2B17", "#39FF7A"],
+    defaultProjectName: "Mono Terminal",
     fill: { mode: "solid", bg: "#05140A", accent: "#39FF7A" },
   },
   {
@@ -39,6 +46,7 @@ const ONION_TEMPLATES = [
     name: "Pastel Pocket",
     description: "Soft pink/lilac palette, rounded and friendly.",
     swatch: ["#FBE9F2", "#E8D5F2", "#C9A6E0"],
+    defaultProjectName: "Pastel Pocket",
     fill: { mode: "solid", bg: "#F3E3F1", accent: "#9B6BB5" },
   },
   {
@@ -46,6 +54,7 @@ const ONION_TEMPLATES = [
     name: "Carbon Fiber",
     description: "Dark woven-texture look, red accent highlights.",
     swatch: ["#161616", "#262626", "#D8232A"],
+    defaultProjectName: "Carbon Fiber",
     fill: { mode: "weave", bg: "#1A1A1A", line: "#262626", accent: "#D8232A" },
   },
 ];

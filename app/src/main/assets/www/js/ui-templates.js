@@ -26,7 +26,7 @@ const UITemplates = (() => {
         </div>
       `;
       card.addEventListener("click", () => {
-        const project = new ThemeProject({ name: t.name === "Blank Canvas" ? "Untitled Theme" : t.name, templateId: t.id });
+        const project = new ThemeProject({ name: t.defaultProjectName || "Untitled Theme", templateId: t.id });
         App.openEditorWithProject(project);
       });
       grid.appendChild(card);

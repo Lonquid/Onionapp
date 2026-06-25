@@ -82,16 +82,29 @@ function applyTemplateFill(stack, template, slot) {
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
   } else if (fill.mode === "grid") {
-    ctx.fillStyle = fill.bg;
+    // Matches the real "Blueprint by Aemiii91" OnionOS theme: 8px minor
+    // grid, a brighter major line every 10th minor line, base blue
+    // #1A418D. Colors are sampled directly from that theme's background.png
+    // rather than guessed, so a new project started from this template
+    // looks like the real thing immediately.
+    ctx.fillStyle = fill.bg || "#1A418D";
     ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = fill.line;
+    const minorStep = fill.minorStep || 8;
+    const majorEvery = fill.majorEvery || 10;
     ctx.lineWidth = 1;
-    const gap = Math.max(8, Math.round(Math.min(w, h) / 20));
-    for (let x = 0; x <= w; x += gap) {
-      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    for (let x = 0, i = 0; x <= w; x += minorStep, i++) {
+      ctx.strokeStyle = (i % majorEvery === 0) ? (fill.major || "#768DBB") : (fill.line || "#3C5D9E");
+      ctx.beginPath(); ctx.moveTo(x + 0.5, 0); ctx.lineTo(x + 0.5, h); ctx.stroke();
     }
-    for (let y = 0; y <= h; y += gap) {
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    for (let y = 0, i = 0; y <= h; y += minorStep, i++) {
+      ctx.strokeStyle = (i % majorEvery === 0) ? (fill.major || "#768DBB") : (fill.line || "#3C5D9E");
+      ctx.beginPath(); ctx.moveTo(0, y + 0.5); ctx.lineTo(w, y + 0.5); ctx.stroke();
+    }
+    if (fill.crosshair) {
+      ctx.strokeStyle = fill.major || "#768DBB";
+      ctx.beginPath();
+      ctx.arc(w / 2, h / 2, 8, 0, Math.PI * 2);
+      ctx.stroke();
     }
   } else if (fill.mode === "weave") {
     ctx.fillStyle = fill.bg;
