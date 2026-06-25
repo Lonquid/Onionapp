@@ -1,0 +1,322 @@
+.editor {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ---- Slot rail (left) ---- */
+.slotrail {
+  width: 168px;
+  flex: 0 0 auto;
+  border-right: 1px solid var(--line-soft);
+  overflow-y: auto;
+  padding: 10px 0 80px;
+}
+.slotrail__group { margin-bottom: 4px; }
+.slotrail__heading {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-2);
+  padding: 10px 12px 6px;
+}
+.slotitem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-0);
+  cursor: pointer;
+  text-align: left;
+}
+.slotitem--active { background: var(--bg-2); }
+.slotitem--active .slotitem__name { color: var(--select); }
+.slotitem__thumb {
+  width: 30px; height: 30px;
+  border-radius: 5px;
+  background-color: var(--bg-3);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+.slotitem__meta { display: flex; flex-direction: column; min-width: 0; }
+.slotitem__name {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.slotitem__dim { font-size: 10.5px; color: var(--text-2); }
+
+/* ---- Stage (center) ---- */
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  background:
+    linear-gradient(45deg, var(--bg-1) 25%, transparent 25%, transparent 75%, var(--bg-1) 75%) 0 0/24px 24px,
+    linear-gradient(45deg, var(--bg-1) 25%, transparent 25%, transparent 75%, var(--bg-1) 75%) 12px 12px/24px 24px,
+    var(--bg-0);
+  position: relative;
+  padding: 16px;
+}
+.stage__frame {
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 18px 40px rgba(0,0,0,0.5);
+  background: repeating-conic-gradient(#2a2632 0% 25%, #221f29 0% 50%) 0 0/16px 16px;
+}
+.stage__canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  image-rendering: pixelated;
+  touch-action: none;
+}
+.stage__canvas--overlay { z-index: 2; }
+.stage__zoomrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+.stage__zoomlabel { font-size: 12px; color: var(--text-1); width: 42px; text-align: center; }
+
+/* ---- Side panel (right) ---- */
+.sidepanel {
+  width: 270px;
+  flex: 0 0 auto;
+  border-left: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.sidepanel__tabs {
+  display: flex;
+  border-bottom: 1px solid var(--line-soft);
+  flex: 0 0 auto;
+}
+.sidepanel__handle {
+  display: none;
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line);
+  margin: 8px auto 0;
+  flex: 0 0 auto;
+}
+.sidepanel__tab {
+  flex: 1;
+  padding: 12px 0;
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.sidepanel__tab--active { color: var(--text-0); border-bottom-color: var(--accent); }
+.sidepanel__pane { display: none; flex: 1; min-height: 0; overflow-y: auto; padding: 14px; flex-direction: column; gap: 14px; }
+.sidepanel__pane--active { display: flex; }
+
+.toolgrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.toolbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--text-1);
+  cursor: pointer;
+}
+.toolbtn--active { border-color: var(--accent); color: var(--text-0); background: var(--accent-dim); }
+.toolbtn__icon { font-size: 16px; }
+.toolbtn__label { font-size: 9.5px; }
+
+.toolopt { display: flex; flex-direction: column; gap: 10px; }
+.toolopt--hidden { display: none; }
+.toolopt__row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-1); }
+.toolopt__row span:first-child { width: 58px; flex: 0 0 auto; }
+.toolopt__row input[type="range"] { flex: 1; }
+.toolopt__val { width: 30px; text-align: right; color: var(--text-0); font-family: var(--font-mono); font-size: 11.5px; }
+
+.colorblock { display: flex; flex-direction: column; gap: 10px; }
+.colorblock__swatch {
+  width: 100%;
+  height: 40px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--line);
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+.colorblock__recent { display: flex; gap: 6px; flex-wrap: wrap; }
+.swatch {
+  width: 22px; height: 22px;
+  border-radius: 5px;
+  border: 1px solid rgba(255,255,255,0.18);
+  cursor: pointer;
+  padding: 0;
+}
+
+.layerlist { display: flex; flex-direction: column; gap: 6px; }
+.layerrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.layerrow--active { background: var(--bg-2); border-color: var(--line); }
+.layerrow__vis {
+  background: none; border: none; color: var(--text-1);
+  font-size: 14px; cursor: pointer; flex: 0 0 auto; width: 22px;
+}
+.layerrow__thumb {
+  width: 32px; height: 32px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(45deg, #3a3645 25%, transparent 25%, transparent 75%, #3a3645 75%) 0 0/8px 8px,
+    linear-gradient(45deg, #3a3645 25%, transparent 25%, transparent 75%, #3a3645 75%) 4px 4px/8px 8px,
+    #2a2632;
+  flex: 0 0 auto;
+}
+.layerrow__thumb canvas { width: 100%; height: 100%; object-fit: contain; }
+.layerrow__name {
+  font-size: 12.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.layeractions { display: flex; gap: 6px; flex-wrap: wrap; }
+.layeractions .textbtn { flex: 1; padding: 8px 6px; font-size: 12px; white-space: nowrap; }
+
+.layerblend { display: flex; flex-direction: column; gap: 10px; padding-top: 8px; border-top: 1px solid var(--line-soft); }
+.layerblend label { display: flex; flex-direction: column; gap: 6px; font-size: 11.5px; color: var(--text-2); }
+.layerblend select {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--text-0);
+  border-radius: var(--radius-s);
+  padding: 8px;
+  font-size: 13px;
+}
+
+/* ---- Mobile bottom dock (hidden on wide layouts) ---- */
+.dock {
+  display: none;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 8px 6px;
+  border-top: 1px solid var(--line-soft);
+  overflow-x: auto;
+}
+.dockbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 56px;
+  padding: 6px 4px;
+  border-radius: var(--radius-s);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-1);
+}
+.dockbtn--active { color: var(--text-0); background: var(--accent-dim); border-color: var(--accent); }
+
+/* ---- Responsive: narrow phones get a horizontal slot strip up top
+   (instead of a cramped vertical rail), a bottom dock for tool
+   switching, and the sidepanel becomes a slide-up drawer triggered from
+   the dock rather than disappearing (layers/brush options must stay
+   reachable). ---- */
+@media (max-width: 760px) {
+  .editor { flex-direction: column; }
+
+  .slotrail {
+    width: auto;
+    height: 84px;
+    flex: 0 0 auto;
+    border-right: none;
+    border-bottom: 1px solid var(--line-soft);
+    overflow-x: auto;
+    overflow-y: hidden;
+    display: flex;
+    align-items: center;
+    padding: 8px 8px;
+    gap: 14px;
+  }
+  .slotrail__group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0;
+    flex: 0 0 auto;
+  }
+  .slotrail__heading { display: none; }
+  .slotitem {
+    flex-direction: column;
+    width: 56px;
+    padding: 4px 2px;
+    gap: 4px;
+    flex: 0 0 auto;
+  }
+  .slotitem__thumb { width: 36px; height: 36px; }
+  .slotitem__meta { align-items: center; }
+  .slotitem__name {
+    font-size: 9.5px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.15;
+    max-width: 56px;
+  }
+  .slotitem__dim { display: none; }
+
+  .stage { padding: 8px; }
+
+  .sidepanel {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    width: auto;
+    max-height: 46vh;
+    border-left: none;
+    border-top: 1px solid var(--line);
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+    transform: translateY(100%);
+    transition: transform 0.2s ease;
+    z-index: 50;
+    background: var(--bg-1);
+  }
+  .sidepanel--open { transform: translateY(0); }
+  .sidepanel__handle { display: block; }
+  .dock { display: flex; }
+}
+
+

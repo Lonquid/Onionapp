@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<title>Onion Themer</title>
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/start.css" />
+<link rel="stylesheet" href="css/templates.css" />
+<link rel="stylesheet" href="css/editor.css" />
+</head>
+<body>
+
+<!-- ============ START SCREEN ============ -->
+<section id="screen-start" class="screen screen--active">
+  <div class="start">
+    <div class="start__brand">
+      <div class="start__mark">
+        <span class="start__mark-card start__mark-card--a"></span>
+        <span class="start__mark-card start__mark-card--b"></span>
+        <span class="start__mark-card start__mark-card--c"></span>
+      </div>
+      <h1 class="start__title">Onion&nbsp;Themer</h1>
+      <p class="start__subtitle">Paint OnionOS skins for Miyoo&nbsp;Mini, layer by layer.</p>
+    </div>
+
+    <div class="start__actions">
+      <button class="bigbtn bigbtn--primary" id="btn-new-project">
+        <span class="bigbtn__icon">＋</span>
+        <span class="bigbtn__label">New project</span>
+        <span class="bigbtn__hint">Start from a template</span>
+      </button>
+      <button class="bigbtn" id="btn-open-project">
+        <span class="bigbtn__icon">⎘</span>
+        <span class="bigbtn__label">Open saved project</span>
+        <span class="bigbtn__hint">Continue a .onproj file</span>
+      </button>
+    </div>
+
+    <div class="start__recent" id="recent-projects-wrap" hidden>
+      <h2 class="start__recent-title">Recent on this device</h2>
+      <div class="start__recent-list" id="recent-projects-list"></div>
+    </div>
+
+    <p class="start__footnote">Exports a ready-to-flash theme ZIP for <code>/Themes</code> on your SD card.</p>
+  </div>
+</section>
+
+<!-- ============ TEMPLATE PICKER ============ -->
+<section id="screen-templates" class="screen">
+  <header class="topbar">
+    <button class="iconbtn" id="btn-templates-back" aria-label="Back">←</button>
+    <h1 class="topbar__title">Choose a template</h1>
+    <span class="topbar__spacer"></span>
+  </header>
+  <div class="templates">
+    <p class="templates__hint">Built for Miyoo Mini · 640×480 portrait (480×640 framebuffer). Every template gives you the full set of editable layers.</p>
+    <div class="templates__grid" id="templates-grid"></div>
+  </div>
+</section>
+
+<!-- ============ EDITOR ============ -->
+<section id="screen-editor" class="screen">
+  <header class="topbar topbar--editor">
+    <button class="iconbtn" id="btn-editor-back" aria-label="Back">←</button>
+    <div class="topbar__projectname" id="editor-project-name" contenteditable="true" spellcheck="false">Untitled Theme</div>
+    <div class="topbar__actions">
+      <button class="iconbtn" id="btn-undo" title="Undo" disabled>↶</button>
+      <button class="iconbtn" id="btn-redo" title="Redo" disabled>↷</button>
+      <button class="iconbtn" id="btn-save-project" title="Save project">💾</button>
+      <button class="textbtn textbtn--accent" id="btn-export" title="Export theme ZIP">Export</button>
+    </div>
+  </header>
+
+  <div class="editor">
+    <!-- Asset slot rail: which part of the theme are we painting -->
+    <nav class="slotrail" id="slot-rail" aria-label="Theme assets"></nav>
+
+    <!-- Canvas stage -->
+    <div class="stage" id="stage">
+      <div class="stage__frame" id="stage-frame">
+        <canvas id="canvas-view" class="stage__canvas"></canvas>
+        <canvas id="canvas-overlay" class="stage__canvas stage__canvas--overlay"></canvas>
+      </div>
+      <div class="stage__zoomrow">
+        <button class="iconbtn iconbtn--ghost" id="btn-zoom-out">－</button>
+        <span class="stage__zoomlabel" id="zoom-label">100%</span>
+        <button class="iconbtn iconbtn--ghost" id="btn-zoom-in">＋</button>
+        <button class="iconbtn iconbtn--ghost" id="btn-zoom-fit">Fit</button>
+      </div>
+    </div>
+
+    <!-- Right panel: layers + tool options (becomes a bottom drawer on narrow screens) -->
+    <aside class="sidepanel" id="sidepanel">
+      <div class="sidepanel__handle" id="sidepanel-handle"></div>
+      <div class="sidepanel__tabs">
+        <button class="sidepanel__tab sidepanel__tab--active" data-panel="tool">Tool</button>
+        <button class="sidepanel__tab" data-panel="layers">Layers</button>
+      </div>
+
+      <div class="sidepanel__pane sidepanel__pane--active" data-pane="tool">
+        <div class="toolgrid" id="tool-grid"></div>
+
+        <div class="toolopt" id="brush-options">
+          <label class="toolopt__row">
+            <span>Size</span>
+            <input type="range" id="opt-size" min="1" max="120" value="10" />
+            <span class="toolopt__val" id="opt-size-val">10</span>
+          </label>
+          <label class="toolopt__row">
+            <span>Opacity</span>
+            <input type="range" id="opt-opacity" min="1" max="100" value="100" />
+            <span class="toolopt__val" id="opt-opacity-val">100</span>
+          </label>
+          <label class="toolopt__row">
+            <span>Hardness</span>
+            <input type="range" id="opt-hardness" min="0" max="100" value="85" />
+            <span class="toolopt__val" id="opt-hardness-val">85</span>
+          </label>
+        </div>
+
+        <div class="colorblock">
+          <input type="color" id="opt-color" value="#ffffff" class="colorblock__swatch" />
+          <div class="colorblock__recent" id="recent-colors"></div>
+        </div>
+      </div>
+
+      <div class="sidepanel__pane" data-pane="layers">
+        <div class="layerlist" id="layer-list"></div>
+        <div class="layeractions">
+          <button class="textbtn" id="btn-add-layer">+ Layer</button>
+          <button class="textbtn" id="btn-dup-layer">Duplicate</button>
+          <button class="textbtn textbtn--danger" id="btn-del-layer">Delete</button>
+        </div>
+        <div class="layerblend">
+          <label>Blend
+            <select id="layer-blend">
+              <option value="source-over">Normal</option>
+              <option value="multiply">Multiply</option>
+              <option value="screen">Screen</option>
+              <option value="overlay">Overlay</option>
+              <option value="lighten">Lighten</option>
+              <option value="darken">Darken</option>
+              <option value="color-dodge">Color Dodge</option>
+              <option value="difference">Difference</option>
+            </select>
+          </label>
+          <label class="toolopt__row">
+            <span>Layer opacity</span>
+            <input type="range" id="layer-opacity" min="0" max="100" value="100" />
+            <span class="toolopt__val" id="layer-opacity-val">100</span>
+          </label>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Mobile-friendly bottom tool dock (mirrors sidepanel tool grid on small screens) -->
+  <div class="dock" id="mobile-dock"></div>
+</section>
+
+<!-- ============ MODALS ============ -->
+<div class="modal" id="modal-export" hidden>
+  <div class="modal__box">
+    <h2>Export theme</h2>
+    <p id="export-status">Packing assets…</p>
+    <div class="modal__progress"><div class="modal__progress-bar" id="export-progress"></div></div>
+    <button class="textbtn" id="btn-export-close" hidden>Done</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-confirm" hidden>
+  <div class="modal__box">
+    <h2 id="confirm-title">Are you sure?</h2>
+    <p id="confirm-body"></p>
+    <div class="modal__row">
+      <button class="textbtn" id="confirm-cancel">Cancel</button>
+      <button class="textbtn textbtn--danger" id="confirm-ok">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/jszip.min.js"></script>
+<script src="js/spec.js"></script>
+<script src="js/templates-data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/bridge.js"></script>
+<script src="js/layer-engine.js"></script>
+<script src="js/painter.js"></script>
+<script src="js/exporter.js"></script>
+<script src="js/ui-start.js"></script>
+<script src="js/ui-templates.js"></script>
+<script src="js/ui-editor.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

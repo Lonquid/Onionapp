@@ -1,0 +1,162 @@
+/* ==========================================================================
+   Design tokens
+   A workshop aesthetic, not a marketing page: warm dark charcoal base,
+   one hot accent (signal orange) reserved for primary actions, and a
+   second cooler accent (amber) for active/selected states — borrowed
+   from handheld-console LED + PCB-trace color language.
+   ========================================================================== */
+:root {
+  --bg-0: #100E14;
+  --bg-1: #15131A;
+  --bg-2: #1D1A24;
+  --bg-3: #262230;
+  --line: #322C3C;
+  --line-soft: #241F2C;
+  --text-0: #F4F1EC;
+  --text-1: #B9B3C4;
+  --text-2: #79728A;
+  --accent: #FF6F3C;
+  --accent-dim: #7A3B22;
+  --select: #FFD23F;
+  --danger: #E8525C;
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+  --font-display: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "SF Mono", "Roboto Mono", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  background: var(--bg-0);
+  color: var(--text-0);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+  user-select: none;
+}
+button { font-family: inherit; }
+input, [contenteditable] { font-family: inherit; }
+
+.screen {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--bg-0);
+}
+.screen--active { display: flex; }
+
+/* ---- shared buttons ---- */
+.iconbtn {
+  width: 40px; height: 40px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.iconbtn:disabled { opacity: 0.35; }
+.iconbtn--ghost { background: transparent; border-color: transparent; }
+
+.textbtn {
+  padding: 9px 16px;
+  border-radius: var(--radius-s);
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+  color: var(--text-0);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.textbtn--accent { background: var(--accent); border-color: var(--accent); color: #20120A; }
+.textbtn--danger { color: var(--danger); border-color: rgba(232,82,92,0.4); }
+
+/* ---- topbar (templates + editor) ---- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  flex: 0 0 auto;
+}
+.topbar__title {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+}
+.topbar__spacer { flex: 1; }
+.topbar__projectname {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  outline: none;
+  padding: 6px 10px;
+  border-radius: var(--radius-s);
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.topbar__projectname:focus { background: var(--bg-2); }
+.topbar__actions { display: flex; gap: 8px; align-items: center; flex: 0 0 auto; }
+
+/* ---- toast ---- */
+.toast {
+  position: fixed;
+  left: 50%; bottom: 28px;
+  transform: translate(-50%, 12px);
+  background: var(--bg-3);
+  border: 1px solid var(--line);
+  color: var(--text-0);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 999;
+  max-width: 86vw;
+  text-align: center;
+}
+.toast--visible { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---- modals ---- */
+.modal {
+  position: fixed; inset: 0;
+  background: rgba(8,7,11,0.72);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 998;
+  padding: 24px;
+}
+.modal[hidden] { display: none !important; }
+.modal__box {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 22px;
+  width: 100%;
+  max-width: 360px;
+}
+.modal__box h2 { margin: 0 0 8px; font-size: 17px; }
+.modal__box p { margin: 0 0 16px; color: var(--text-1); font-size: 14px; line-height: 1.5; }
+.modal__row { display: flex; gap: 10px; justify-content: flex-end; }
+.modal__progress {
+  height: 6px;
+  background: var(--bg-1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.modal__progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.15s ease;
+}
