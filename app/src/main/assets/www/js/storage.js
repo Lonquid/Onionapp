@@ -72,6 +72,8 @@ function applyTemplateFill(stack, template, slot) {
 
   if (fill.mode === "transparent") {
     // leave empty
+  } else if (fill.mode === "blueprint-kit") {
+    BlueprintKit.render(ctx, w, h, slot);
   } else if (fill.mode === "solid") {
     ctx.fillStyle = fill.bg;
     ctx.fillRect(0, 0, w, h);

@@ -20,10 +20,10 @@ const ONION_TEMPLATES = [
   {
     id: "blueprint",
     name: "Blueprint (by Aemiii91)",
-    description: "A from-scratch recreation of the real, popular \"Blueprint\" OnionOS theme's grid background — a great base to riff on. Not affiliated with the original author.",
+    description: "Recreates the real \"Blueprint\" theme's approach: every slot opens with a blue engineering-grid guide plus a sketch of what that specific asset is for — a controller diagram for the key-mapping screen, a progress ring for charging frames, segment bars for the brightness slider, and so on. Not affiliated with the original author.",
     swatch: ["#1A418D", "#3C5D9E", "#768DBB"],
     defaultProjectName: "My Blueprint Theme",
-    fill: { mode: "grid", bg: "#1A418D", line: "#3C5D9E", major: "#768DBB", minorStep: 8, majorEvery: 10, crosshair: true },
+    fill: { mode: "blueprint-kit" },
   },
   {
     id: "sunset",
